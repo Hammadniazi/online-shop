@@ -1,7 +1,13 @@
 export interface Product {
   id: number;
-  name: string;
+  title: string;
   description: string;
   price: number;
-  imageUrl: string;
+  rating: number;
+  discountedPrice?: number;
+  discountPercentage?: number;
+  discountedPercentage?: number;
+  image: {
+    url: string;
+  };
 }
