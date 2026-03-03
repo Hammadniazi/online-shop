@@ -32,9 +32,51 @@ export default function ProductCard({ product }: ProductCardProps) {
         )}
       </div>
       <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
-          {product.title}{" "}
-        </h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-gray-800  line-clamp-2">
+            {product.title}{" "}
+          </h3>
+          {/* Rating */}
+          {product.rating > 0 && (
+            <div className="flex items-center mb-3">
+              <div className="flex text-yellow-400">
+                {"⭐".repeat(Math.round(product.rating))}
+                {"☆".repeat(5 - Math.round(product.rating))}
+              </div>
+              <span className="text-sm text-gray-600 ml-2">
+                ({Math.round(product.rating)})
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Description */}
+        <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+          {product.description}
+        </p>
+
+        {/* Price */}
+        <div className="flex items-center gap-2 mb-4">
+          {product.discountedPrice &&
+          product.discountedPrice < product.price ? (
+            <>
+              <span className="text-lg font-bold text-green-600">
+                {product.discountedPrice.toFixed(2)}nok
+              </span>
+              <span className="text-md text-gray-600 line-through">
+                {product.price.toFixed(2)}nok
+              </span>
+            </>
+          ) : (
+            <span className="text-lg font-bold text-gray-900">
+              {product.price.toFixed(2)}nok
+            </span>
+          )}
+        </div>
+        {/* Add to Cart Button */}
+        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors">
+          Add to Cart
+        </button>
       </div>
     </div>
   );
