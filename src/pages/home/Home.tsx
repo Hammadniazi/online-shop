@@ -1,5 +1,6 @@
 import { useProducts } from "../../hooks/useProducts";
 import { ProductGrid } from "../../components/ProductGrid";
+import { SearchBar } from "../../components/SearchBar";
 
 export default function Home() {
   const { data: products = [], isLoading, error } = useProducts();
@@ -10,7 +11,9 @@ export default function Home() {
         <h1 className="text-4xl font-bold mb-4">Welcome to Our Online Shop</h1>
         <p className="text-lg">Discover amazing products at great prices</p>
       </div>
-      <div>{/* <SearchBar/> */}</div>
+      <div className="flex justify-center">
+        <SearchBar />
+      </div>
       {/* Product Grid */}
       <div>
         <h2 className="text-2xl font-bold mb-6">Featured Products</h2>
