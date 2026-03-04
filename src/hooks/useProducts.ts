@@ -8,3 +8,9 @@ export const useProducts = () => {
     queryFn: productService.getProduct,
   });
 };
+export const useSearchProducts = (query: string) => {
+  return useQuery<Product[]>({
+    queryKey: ["product", "search", query],
+    queryFn: () => productService.searchProducts(query),
+  });
+};
