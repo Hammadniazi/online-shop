@@ -1,5 +1,5 @@
 export interface Product {
-  id: number;
+  id: string;
   title: string;
   description: string;
   price: number;
@@ -10,4 +10,11 @@ export interface Product {
   image: {
     url: string;
   };
+  tags?: string[];
+  reviews?: Review[];
+}
+export interface Review {
+  rating: number;
+  description: string;
+  username?: string;
 }

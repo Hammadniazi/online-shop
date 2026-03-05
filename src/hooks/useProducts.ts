@@ -10,6 +10,14 @@ export const useProducts = () => {
   });
 };
 
+export const useProductById = (id: string) => {
+  return useQuery<Product>({
+    queryKey: ["product", id],
+    queryFn: () => productService.getProductById(id),
+    enabled: !!id,
+  });
+};
+
 export const useSearchProducts = (query: string) => {
   const { data: products = [], isLoading, error } = useProducts();
   const filteredProducts = useMemo(() => {
@@ -17,7 +25,7 @@ export const useSearchProducts = (query: string) => {
       return products;
     }
     return products.filter((product) =>
-      product.title.toLocaleLowerCase().includes(query.toLowerCase()),
+      product.title.toLowerCase().includes(query.toLowerCase()),
     );
   }, [products, query]);
   return {

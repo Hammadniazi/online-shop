@@ -2,9 +2,13 @@ import type { Product } from "../types";
 
 interface ProductCardProps {
   product: Product;
+  onProductClick: (id: string) => void;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({
+  product,
+  onProductClick,
+}: ProductCardProps) {
   //   Calculate discount percentage
   const discountPercentage = product.discountedPrice
     ? Math.round(
@@ -13,7 +17,10 @@ export default function ProductCard({ product }: ProductCardProps) {
     : 0;
 
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer overflow-hidden">
+    <div
+      className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer overflow-hidden"
+      onClick={() => onProductClick(product.id)}
+    >
       {/* Product Image */}
       <div className="relative w-full h-48 bg-gray-100 overflow-hidden">
         <img

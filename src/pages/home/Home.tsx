@@ -1,9 +1,14 @@
 import { useProducts } from "../../hooks/useProducts";
 import { ProductGrid } from "../../components/ProductGrid";
 import { SearchBar } from "../../components/SearchBar";
+import { useRouter } from "@tanstack/react-router";
 
 export default function Home() {
+  const router = useRouter();
   const { data: products = [], isLoading, error } = useProducts();
+  const handleProductclick = (id: string) => {
+    router.navigate({ to: `/products/${id}` });
+  };
 
   return (
     <div className="space-y-8">
@@ -17,7 +22,12 @@ export default function Home() {
       {/* Product Grid */}
       <div>
         <h2 className="text-2xl font-bold mb-6">Featured Products</h2>
-        <ProductGrid products={products} isLoading={isLoading} error={error} />
+        <ProductGrid
+          products={products}
+          isLoading={isLoading}
+          error={error}
+          onProductClick={(id) => handleProductclick(id)}
+        />
       </div>
     </div>
   );
