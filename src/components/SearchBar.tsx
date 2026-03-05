@@ -1,11 +1,17 @@
 import { useState } from "react";
 import type { Product } from "../types";
 import { useSearchProducts } from "../hooks/useProducts";
+import { router } from "../router";
 
 export const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
   const { data: result = [], isLoading } = useSearchProducts(searchQuery);
+  const handleSelectProduct = (product: Product) => {
+    router.navigate({ to: "/products/$id", params: { id: product.id } });
+    setSearchQuery("");
+    setShowResults(false);
+  };
 
   return (
     <div className="relative w-full max-w-md">
@@ -27,7 +33,11 @@ export const SearchBar = () => {
           ) : result.length > 0 ? (
             <ul>
               {result.map((product) => (
-                <li className="px-4 py-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0 flex items-center gap-3">
+                <li
+                  key={product.id}
+                  onClick={() => handleSelectProduct(product)}
+                  className="px-4 py-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0 flex items-center gap-3"
+                >
                   <img
                     src={product.image.url || "https://via.placeholder.com/50"}
                     alt={product.title}
