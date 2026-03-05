@@ -11,4 +11,12 @@ export const productService = {
     const data = await response.json();
     return data.data || [];
   },
+  getProductById: async (id: string): Promise<Product> => {
+    const response = await fetch(`${API_BASE_URL}/online-shop/${id}`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch product: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data.data;
+  },
 };
