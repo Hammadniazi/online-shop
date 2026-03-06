@@ -18,3 +18,6 @@ export interface Review {
   description: string;
   username?: string;
 }
+export interface CartItem extends Product {
+  quantity: number;
+}

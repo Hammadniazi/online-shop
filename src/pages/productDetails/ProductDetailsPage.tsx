@@ -1,10 +1,16 @@
-import { useParams } from "@tanstack/react-router";
+import { useParams, useRouter } from "@tanstack/react-router";
 import { useProductById } from "../../hooks/useProducts";
-import { router } from "../../router";
+import { useCartStore } from "../../stores/cartStore";
+import { toast } from "react-hot-toast";
+import { useState } from "react";
 
 export const ProductDetailsPage = () => {
   const { id } = useParams({ from: "/products/$id" });
+  const router = useRouter();
+  const [quantity, setQuantity] = useState(1);
+  const [addedToCart, setAddedToCart] = useState(false);
   const { data: product, isLoading, error } = useProductById(id);
+  const addItem = useCartStore((state) => state.addItem);
 
   if (isLoading) {
     return <div className="text-center py-12 text-lg">Loading product...</div>;
@@ -23,6 +29,12 @@ export const ProductDetailsPage = () => {
       </div>
     );
   }
+
+  const handleAddToCart = () => {
+    addItem(product, quantity);
+    setAddedToCart(true);
+    toast.success(`Added ${quantity} item(s) to cart`);
+  };
 
   return (
     <div className="space-y-8">
@@ -97,11 +109,16 @@ export const ProductDetailsPage = () => {
             <p className="text-gray-700 leading-relaxed">
               {product.description}
             </p>
-            {/* Add to Cart Button */}
-            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded transition-colors">
-              Add to Cart
-            </button>
           </div>
+          {/* Add to Cart Button */}
+          <button
+            onClick={handleAddToCart}
+            className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors text-white ${
+              addedToCart ? "bg-green-600" : "bg-blue-600 hover:bg-blue-700"
+            }`}
+          >
+            {addedToCart ? "✓ Added to Cart" : "Add to Cart"}
+          </button>
         </div>
       </div>
       {/* Reviews */}
