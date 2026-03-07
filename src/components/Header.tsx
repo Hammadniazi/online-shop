@@ -1,11 +1,14 @@
 import { useRouter } from "@tanstack/react-router";
 import { useCartStore } from "../stores/cartStore";
+import { useState } from "react";
 
 export default function Header() {
   const router = useRouter();
   const itemCount = useCartStore((state) => state.getItemCount());
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const handleNavigation = (path: string) => {
     router.navigate({ to: path });
+    setIsMenuOpen(false);
   };
   return (
     <header className="bg-white shadow-md">
@@ -18,7 +21,7 @@ export default function Header() {
           Online Shop
         </div>
         {/* Navigation */}
-        <nav className="flex gap-6 items-center">
+        <nav className="hidden md:flex gap-6 items-center">
           <button
             onClick={() => handleNavigation("/")}
             className="text-gray-700 hover:text-blue-600 transition-colors"
@@ -51,7 +54,39 @@ export default function Header() {
             </button>
           </div>
         </nav>
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="md:hidden text-2xl"
+        >
+          ☰
+        </button>
       </div>
+
+      {/* Mobile Navigation */}
+      {isMenuOpen && (
+        <nav className="md:hidden bg-gray-100 px-4 py-4 flex flex-col gap-4">
+          <button
+            onClick={() => handleNavigation("/")}
+            className="text-gray-700 hover:text-blue-600 text-left"
+          >
+            Home
+          </button>
+          <button
+            onClick={() => handleNavigation("/cart")}
+            className="text-gray-700 hover:text-blue-600 text-left"
+          >
+            Cart ({itemCount})
+          </button>
+          <button
+            onClick={() => handleNavigation("/contact")}
+            className="text-gray-700 hover:text-blue-600 text-left"
+          >
+            Contact
+          </button>
+        </nav>
+      )}
     </header>
   );
 }
