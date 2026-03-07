@@ -6,6 +6,7 @@ import { productDetailsRoute } from "./routes/productDetails/ProductDetails";
 import { contactRoute } from "./routes/contact/Contact";
 import { cartRoute } from "./routes/cart/Cart";
 import { checkoutRoute } from "./routes/checkout/Checkout";
+import { checkoutSuccess } from "./routes/checkoutSuccess/CheckoutSuccess";
 export const rootRoute = createRootRoute({
   component: Layout,
   notFoundComponent: NotFound,
@@ -16,5 +17,6 @@ const routeTree = rootRoute.addChildren([
   contactRoute,
   cartRoute,
   checkoutRoute,
+  checkoutSuccess,
 ]);
 export const router = createRouter({ routeTree });
