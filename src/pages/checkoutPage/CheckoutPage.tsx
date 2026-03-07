@@ -1,5 +1,6 @@
 import { useRouter } from "@tanstack/react-router";
 import { useCartStore } from "../../stores/cartStore";
+import { toast } from "react-hot-toast";
 
 export const CheckoutPage = () => {
   const router = useRouter();
@@ -9,6 +10,7 @@ export const CheckoutPage = () => {
 
   const handleCheckout = () => {
     clearCart();
+    toast.success("Order completed successfully!");
     router.navigate({ to: "/checkout-success" });
   };
 
