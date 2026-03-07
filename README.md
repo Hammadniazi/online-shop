@@ -1,73 +1,138 @@
-# React + TypeScript + Vite
+# Online Shop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive e-commerce application built with React, TypeScript, Vite, and Tailwind CSS.
 
-Currently, two official plugins are available:
+## Project Links
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Github Repository: [https://github.com/Hammadniazi/online-shop](https://github.com/Hammadniazi/online-shop)
+- Live Link: [https://onine-shop.netlify.app/](https://onine-shop.netlify.app/)
 
-## React Compiler
+## Project Overview
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+This is a fully functional online shop featuring:
 
-## Expanding the ESLint configuration
+- Product catalog with search and filtering
+- Shopping cart with item management
+- Checkout process
+- Contact page
+- Type-safe TypeScript implementation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Frontend Framework**: React with TypeScript
+- **Build Tool**: Vite (fast bundling and HMR)
+- **UI Styling**: Tailwind CSS
+- **Routing**: TanStack Router for client-side navigation
+- **State Management**: Zustand (lightweight store for cart)
+- **Toast Notifications**: React Hot Toast
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Project Structure
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+online-shop/
+├── src/
+│   ├── components/
+│   │   ├── Header.tsx
+│   │   ├── ProductCard.tsx
+│   │   ├── ProductGrid.tsx
+│   │   └── SearchBar.tsx
+│   ├── pages/
+│   │   ├── HomePage.tsx
+│   │   ├── CartPage.tsx
+│   │   ├── CheckoutPage.tsx
+│   │   ├── ContactPage.tsx
+│   │   ├── ProductDetailsPage.tsx
+│   │   ├── CheckoutSuccessPage.tsx
+│   │   ├── NotFound.tsx
+│   │   └── Layout.tsx
+│   ├── routes/
+│   │   └── router.tsx
+│   ├── stores/
+│   │   └── cartStore.ts
+│   ├── services/
+│   │   └── productService.ts
+│   ├── hooks/
+│   │   └── useProducts.ts
+│   ├── types/
+│   │   └── index.ts
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── index.css
+├── public/
+├── package.json
+├── tsconfig.json
+├── tailwind.config.js
+├── vite.config.ts
+└── eslint.config.js
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Installation
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cd online-shop
+
+# Install dependencies
+npm install
 ```
+
+### Development
+
+```bash
+# Start development server with HMR
+npm run dev
+
+# Open browser
+# Visit http://localhost:5173
+```
+
+### Build for Production
+
+```bash
+# Build optimized bundle
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+### Linting
+
+```bash
+# Check code quality
+npm run lint
+
+# Fix linting issues
+npm run lint --fix
+```
+
+## Dependencies
+
+### Core
+
+- `react`: UI library
+- `react-dom`: DOM rendering
+- `@tanstack/react-router`: Routing solution
+- `zustand`: State management
+- `react-hot-toast`: Toast notifications
+
+### Development
+
+- `typescript`: Type safety
+- `vite`: Build tool & dev server
+- `tailwindcss`: CSS utility framework
+- `eslint`: Code quality
+- `postcss`: CSS processing
+
+## License
+
+This project is for educational purposes.
+
+---
+
+## Author
+
+- Hammad Khan (@Hammadniazi)
+
+---
