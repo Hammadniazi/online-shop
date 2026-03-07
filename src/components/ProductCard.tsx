@@ -38,18 +38,18 @@ export default function ProductCard({
 
   return (
     <div
-      className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer overflow-hidden"
+      className="bg-white rounded-lg shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden hover:-translate-y-2 hover:scale-105"
       onClick={() => onProductClick(product.id)}
     >
       {/* Product Image */}
-      <div className="relative w-full h-48 bg-gray-100 overflow-hidden">
+      <div className="relative w-full h-48 bg-gray-100 overflow-hidden group">
         <img
           src={
             product.image.url ||
             "https://via.placeholder.com/300x200?text=No+Image"
           }
           alt={product.title}
-          className="w-full h-full object-cover hover:scale-105 transition-transform"
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
         {/* Discount Badge */}
         {discountPercentage > 0 && (
@@ -104,7 +104,7 @@ export default function ProductCard({
         <button
           onClick={handleAddToCart}
           disabled={isAdding}
-          className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded transition-colors"
+          className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded transition-all duration-300 hover:scale-105 active:scale-95"
         >
           {isAdding ? "Adding..." : "Add to Cart"}
         </button>
