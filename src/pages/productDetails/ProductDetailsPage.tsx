@@ -7,7 +7,7 @@ import { useState } from "react";
 export const ProductDetailsPage = () => {
   const { id } = useParams({ from: "/products/$id" });
   const router = useRouter();
-  const [quantity, setQuantity] = useState(1);
+  const [quantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
   const { data: product, isLoading, error } = useProductById(id);
   const addItem = useCartStore((state) => state.addItem);
