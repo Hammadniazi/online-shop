@@ -7,19 +7,6 @@ export const CheckoutPage = () => {
   const clearCart = useCartStore((state) => state.clearCart);
   const totalPrice = useCartStore((state) => state.getTotalPrice());
 
-  if (items.length === 0) {
-    return (
-      <div className="text-center py-12 space-y-6">
-        <p className="text-2xl text-gray-600">Your cart is empty.</p>
-        <button
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
-          onClick={() => router.navigate({ to: "/" })}
-        >
-          Continue Shopping
-        </button>
-      </div>
-    );
-  }
   const handleCheckout = () => {
     clearCart();
     router.navigate({ to: "/checkout-success" });
