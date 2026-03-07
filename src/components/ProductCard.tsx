@@ -1,4 +1,7 @@
+import { useState } from "react";
 import type { Product } from "../types";
+import { useCartStore } from "../stores/cartStore";
+import { toast } from "react-hot-toast";
 
 interface ProductCardProps {
   product: Product;
@@ -9,6 +12,23 @@ export default function ProductCard({
   product,
   onProductClick,
 }: ProductCardProps) {
+  const [isAdding, setIsAdding] = useState(false);
+  const addItem = useCartStore((state) => state.addItem);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsAdding(true);
+
+    try {
+      addItem(product, 1);
+      toast.success(`${product.title} added to cart!`);
+    } catch (error) {
+      toast.error("Failed to add item to cart");
+    } finally {
+      setIsAdding(false);
+    }
+  };
+
   //   Calculate discount percentage
   const discountPercentage = product.discountedPrice
     ? Math.round(
@@ -81,8 +101,12 @@ export default function ProductCard({
           )}
         </div>
         {/* Add to Cart Button */}
-        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors">
-          Add to Cart
+        <button
+          onClick={handleAddToCart}
+          disabled={isAdding}
+          className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded transition-colors"
+        >
+          {isAdding ? "Adding..." : "Add to Cart"}
         </button>
       </div>
     </div>
