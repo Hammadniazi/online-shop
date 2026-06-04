@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 const contactFormSchema = z.object({
   fullName: z.string().min(3, "Full name must be at least 3 characters"),
   email: z.string().email("Email must be a valid email address"),
-  subject: z.string().min(3, "Subject must be at least 5 characters"),
+  subject: z.string().min(3, "Subject must be at least 3 characters"),
   message: z.string().min(10, "Message must be at least 10 characters"),
 });
 
