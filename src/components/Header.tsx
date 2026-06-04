@@ -14,12 +14,13 @@ export default function Header() {
     <header className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
-        <div
+        <button
           onClick={() => handleNavigation("/")}
           className="text-2xl font-bold text-blue-600 cursor-pointer"
+          aria-label="Go to home page"
         >
           Online Shop
-        </div>
+        </button>
         {/* Navigation */}
         <nav className="hidden md:flex gap-6 items-center">
           <button
@@ -44,10 +45,11 @@ export default function Header() {
             <button
               onClick={() => handleNavigation("/cart")}
               className="relative text-gray-700 hover:text-blue-600 transition-colors"
+              aria-label={`View cart, ${itemCount} item${itemCount !== 1 ? 's' : ''}`}
             >
               🛒
               {itemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center" aria-hidden="true">
                   {itemCount}
                 </span>
               )}
@@ -59,8 +61,10 @@ export default function Header() {
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="md:hidden text-2xl"
+          aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={isMenuOpen}
         >
-          ☰
+          {isMenuOpen ? "✕" : "☰"}
         </button>
       </div>
 
