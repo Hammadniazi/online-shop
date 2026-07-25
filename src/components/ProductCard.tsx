@@ -40,6 +40,15 @@ export default function ProductCard({
     <div
       className="bg-white rounded-lg shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden hover:-translate-y-2 hover:scale-105"
       onClick={() => onProductClick(product.id)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onProductClick(product.id);
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-label={`View details for ${product.title}`}
     >
       {/* Product Image */}
       <div className="relative w-full h-48 bg-gray-100 overflow-hidden group">

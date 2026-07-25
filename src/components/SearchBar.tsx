@@ -31,11 +31,20 @@ export const SearchBar = () => {
           {isLoading ? (
             <div className="p-4 text-center text-gray-500">Loading...</div>
           ) : result.length > 0 ? (
-            <ul>
+            <ul role="listbox">
               {result.map((product) => (
                 <li
                   key={product.id}
                   onClick={() => handleSelectProduct(product)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      handleSelectProduct(product);
+                    }
+                  }}
+                  role="option"
+                  aria-selected={false}
+                  tabIndex={0}
                   className="px-4 py-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0 flex items-center gap-3"
                 >
                   <img
