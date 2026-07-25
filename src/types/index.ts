@@ -5,8 +5,6 @@ export interface Product {
   price: number;
   rating: number;
   discountedPrice?: number;
-  discountPercentage?: number;
-  discountedPercentage?: number;
   image: {
     url: string;
   };

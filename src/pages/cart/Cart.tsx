@@ -29,9 +29,10 @@ export const Cart = () => {
         <h1 className="text-3xl font-bold mb-6">Shopping Cart</h1>
 
         {items.map((item) => {
-          const discountedPrice = item.discountPercentage
-            ? item.price * (1 - item.discountPercentage / 100)
-            : item.price;
+          const discountedPrice =
+            item.discountedPrice && item.discountedPrice < item.price
+              ? item.discountedPrice
+              : item.price;
 
           return (
             <div
@@ -51,7 +52,7 @@ export const Cart = () => {
                   {item.title}
                 </h3>
                 <p className="text-gray-600 text-sm mb-2">
-                  {item.discountPercentage ? (
+                  {item.discountedPrice && item.discountedPrice < item.price ? (
                     <>
                       <span className="line-through">
                         ${item.price.toFixed(2)}

@@ -59,9 +59,10 @@ export const useCartStore = create<CartStore>()(
       getTotalPrice: () => {
         const state = get();
         return state.items.reduce((total, item) => {
-          const price = item.discountPercentage
-            ? item.price * (1 - item.discountPercentage / 100)
-            : item.price;
+          const price =
+            item.discountedPrice && item.discountedPrice < item.price
+              ? item.discountedPrice
+              : item.price;
           return total + price * item.quantity;
         }, 0);
       },

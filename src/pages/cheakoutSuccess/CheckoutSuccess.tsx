@@ -1,7 +1,15 @@
 import { useRouter } from "@tanstack/react-router";
+import { useState } from "react";
 
 export const CheckoutSuccess = () => {
   const router = useRouter();
+  const [orderNumber] = useState(() =>
+    Math.random().toString(36).substr(2, 9).toUpperCase(),
+  );
+  const [orderDate] = useState(() => new Date());
+  const [deliveryDate] = useState(
+    () => new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+  );
 
   return (
     <div className="flex flex-col items-center justify-center py-16 space-y-8">
@@ -25,22 +33,18 @@ export const CheckoutSuccess = () => {
       <div className="bg-white rounded-lg p-8 shadow-md max-w-md w-full space-y-4">
         <div className="flex justify-between py-2 border-b">
           <span className="text-gray-600">Order Number:</span>
-          <span className="font-semibold">
-            #ORD-{Math.random().toString(36).substr(2, 9).toUpperCase()}
-          </span>
+          <span className="font-semibold">#ORD-{orderNumber}</span>
         </div>
         <div className="flex justify-between py-2 border-b">
           <span className="text-gray-600">Order Date:</span>
           <span className="font-semibold">
-            {new Date().toLocaleDateString()}
+            {orderDate.toLocaleDateString()}
           </span>
         </div>
         <div className="flex justify-between py-2">
           <span className="text-gray-600">Estimated Delivery:</span>
           <span className="font-semibold">
-            {new Date(
-              Date.now() + 5 * 24 * 60 * 60 * 1000,
-            ).toLocaleDateString()}
+            {deliveryDate.toLocaleDateString()}
           </span>
         </div>
       </div>
