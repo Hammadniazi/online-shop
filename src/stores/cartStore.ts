@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { CartItem, Product } from "../types";
+import { getDisplayPrice } from "../utils/price";
 
 interface CartStore {
   items: CartItem[];
@@ -58,13 +59,10 @@ export const useCartStore = create<CartStore>()(
 
       getTotalPrice: () => {
         const state = get();
-        return state.items.reduce((total, item) => {
-          const price =
-            item.discountedPrice && item.discountedPrice < item.price
-              ? item.discountedPrice
-              : item.price;
-          return total + price * item.quantity;
-        }, 0);
+        return state.items.reduce(
+          (total, item) => total + getDisplayPrice(item) * item.quantity,
+          0,
+        );
       },
 
       getItemCount: () => {

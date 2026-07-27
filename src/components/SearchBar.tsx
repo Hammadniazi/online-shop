@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Product } from "../types";
 import { useSearchProducts } from "../hooks/useProducts";
 import { router } from "../router";
@@ -6,15 +6,50 @@ import { router } from "../router";
 export const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const { data: result = [], isLoading } = useSearchProducts(searchQuery);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setShowResults(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const handleSelectProduct = (product: Product) => {
     router.navigate({ to: "/products/$id", params: { id: product.id } });
     setSearchQuery("");
     setShowResults(false);
+    setActiveIndex(-1);
+  };
+
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!showResults || result.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIndex((prev) => (prev + 1) % result.length);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIndex((prev) => (prev <= 0 ? result.length - 1 : prev - 1));
+    } else if (e.key === "Enter" && activeIndex >= 0) {
+      e.preventDefault();
+      handleSelectProduct(result[activeIndex]);
+    } else if (e.key === "Escape") {
+      setShowResults(false);
+      setActiveIndex(-1);
+    }
   };
 
   return (
-    <div className="relative w-full max-w-md">
+    <div className="relative w-full max-w-md" ref={containerRef}>
       <input
         type="text"
         placeholder="Search products ..."
@@ -22,7 +57,16 @@ export const SearchBar = () => {
         onChange={(e) => {
           setSearchQuery(e.target.value);
           setShowResults(e.target.value.length > 0);
+          setActiveIndex(-1);
         }}
+        onKeyDown={handleInputKeyDown}
+        onFocus={() => setShowResults(searchQuery.length > 0)}
+        role="combobox"
+        aria-expanded={showResults}
+        aria-controls="search-results-listbox"
+        aria-activedescendant={
+          activeIndex >= 0 ? `search-option-${activeIndex}` : undefined
+        }
         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
       />
       {/* Search Result */}
@@ -31,21 +75,18 @@ export const SearchBar = () => {
           {isLoading ? (
             <div className="p-4 text-center text-gray-500">Loading...</div>
           ) : result.length > 0 ? (
-            <ul role="listbox">
-              {result.map((product) => (
+            <ul id="search-results-listbox" role="listbox">
+              {result.map((product, index) => (
                 <li
                   key={product.id}
+                  id={`search-option-${index}`}
                   onClick={() => handleSelectProduct(product)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      handleSelectProduct(product);
-                    }
-                  }}
+                  onMouseEnter={() => setActiveIndex(index)}
                   role="option"
-                  aria-selected={false}
-                  tabIndex={0}
-                  className="px-4 py-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0 flex items-center gap-3"
+                  aria-selected={index === activeIndex}
+                  className={`px-4 py-3 cursor-pointer border-b last:border-b-0 flex items-center gap-3 ${
+                    index === activeIndex ? "bg-gray-100" : "hover:bg-gray-100"
+                  }`}
                 >
                   <img
                     src={product.image.url || "https://via.placeholder.com/50"}

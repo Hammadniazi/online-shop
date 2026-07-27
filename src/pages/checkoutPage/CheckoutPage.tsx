@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { getDisplayPrice } from "../../utils/price";
 
 const checkoutFormSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -56,10 +57,7 @@ export const CheckoutPage = () => {
           <h2 className="text-xl font-bold mb-4">Order Summary</h2>
           <div className="space-y-3 max-h-96 overflow-y-auto">
             {items.map((item) => {
-              const discountedPrice =
-                item.discountedPrice && item.discountedPrice < item.price
-                  ? item.discountedPrice
-                  : item.price;
+              const discountedPrice = getDisplayPrice(item);
 
               return (
                 <div

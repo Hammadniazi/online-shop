@@ -1,6 +1,7 @@
 import type { Product } from "../types";
 import { useCartStore } from "../stores/cartStore";
 import { toast } from "react-hot-toast";
+import { getDiscountPercentage, isDiscounted } from "../utils/price";
 
 interface ProductCardProps {
   product: Product;
@@ -19,12 +20,7 @@ export default function ProductCard({
     toast.success(`${product.title} added to cart!`);
   };
 
-  //   Calculate discount percentage
-  const discountPercentage = product.discountedPrice
-    ? Math.round(
-        ((product.price - product.discountedPrice) / product.price) * 100,
-      )
-    : 0;
+  const discountPercentage = getDiscountPercentage(product);
 
   return (
     <div
@@ -83,11 +79,10 @@ export default function ProductCard({
 
         {/* Price */}
         <div className="flex items-center gap-2 mb-4">
-          {product.discountedPrice &&
-          product.discountedPrice < product.price ? (
+          {isDiscounted(product) ? (
             <>
               <span className="text-lg font-bold text-green-600">
-                {product.discountedPrice.toFixed(2)}nok
+                {product.discountedPrice!.toFixed(2)}nok
               </span>
               <span className="text-md text-gray-600 line-through">
                 {product.price.toFixed(2)}nok
