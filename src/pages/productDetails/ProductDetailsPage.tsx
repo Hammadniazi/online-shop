@@ -3,6 +3,7 @@ import { useProductById } from "../../hooks/useProducts";
 import { useCartStore } from "../../stores/cartStore";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
+import { isDiscounted } from "../../utils/price";
 
 export const ProductDetailsPage = () => {
   const { id } = useParams({ from: "/products/$id" });
@@ -76,11 +77,10 @@ export const ProductDetailsPage = () => {
           {/* price */}
           <div className="space-y-2">
             <div className="flex items-center gap-2 mb-4">
-              {product.discountedPrice &&
-              product.discountedPrice < product.price ? (
+              {isDiscounted(product) ? (
                 <>
                   <span className="text-3xl font-bold text-gray-900">
-                    {product.discountedPrice.toFixed(2)}nok
+                    {product.discountedPrice!.toFixed(2)}nok
                   </span>
                   <span className="text-lg text-gray-500 line-through">
                     {product.price.toFixed(2)}nok

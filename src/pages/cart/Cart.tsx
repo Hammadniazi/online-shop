@@ -1,6 +1,7 @@
 import { useRouter } from "@tanstack/react-router";
 import { useCartStore } from "../../stores/cartStore";
 import { toast } from "react-hot-toast";
+import { getDisplayPrice, isDiscounted } from "../../utils/price";
 
 export const Cart = () => {
   const router = useRouter();
@@ -29,10 +30,7 @@ export const Cart = () => {
         <h1 className="text-3xl font-bold mb-6">Shopping Cart</h1>
 
         {items.map((item) => {
-          const discountedPrice =
-            item.discountedPrice && item.discountedPrice < item.price
-              ? item.discountedPrice
-              : item.price;
+          const discountedPrice = getDisplayPrice(item);
 
           return (
             <div
@@ -52,7 +50,7 @@ export const Cart = () => {
                   {item.title}
                 </h3>
                 <p className="text-gray-600 text-sm mb-2">
-                  {item.discountedPrice && item.discountedPrice < item.price ? (
+                  {isDiscounted(item) ? (
                     <>
                       <span className="line-through">
                         ${item.price.toFixed(2)}
