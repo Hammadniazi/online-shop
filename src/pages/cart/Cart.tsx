@@ -1,7 +1,7 @@
 import { useRouter } from "@tanstack/react-router";
 import { useCartStore } from "../../stores/cartStore";
 import { toast } from "react-hot-toast";
-import { getDisplayPrice, isDiscounted } from "../../utils/price";
+import { formatPrice, getDisplayPrice, isDiscounted } from "../../utils/price";
 
 export const Cart = () => {
   const router = useRouter();
@@ -53,14 +53,14 @@ export const Cart = () => {
                   {isDiscounted(item) ? (
                     <>
                       <span className="line-through">
-                        ${item.price.toFixed(2)}
+                        {formatPrice(item.price)}
                       </span>{" "}
                       <span className="font-semibold text-green-600">
-                        ${discountedPrice.toFixed(2)}
+                        {formatPrice(discountedPrice)}
                       </span>
                     </>
                   ) : (
-                    <span>${item.price.toFixed(2)}</span>
+                    <span>{formatPrice(item.price)}</span>
                   )}
                 </p>
 
@@ -93,7 +93,7 @@ export const Cart = () => {
                 <div className="text-right">
                   <p className="text-sm text-gray-600">Total</p>
                   <p className="text-xl font-bold text-gray-900">
-                    ${(discountedPrice * item.quantity).toFixed(2)}
+                    {formatPrice(discountedPrice * item.quantity)}
                   </p>
                 </div>
                 <button
@@ -123,7 +123,7 @@ export const Cart = () => {
             </div>
             <div className="flex justify-between text-gray-700">
               <span>Subtotal:</span>
-              <span>${totalPrice.toFixed(2)}</span>
+              <span>{formatPrice(totalPrice)}</span>
             </div>
             <div className="flex justify-between text-gray-700">
               <span>Shipping:</span>
@@ -133,7 +133,7 @@ export const Cart = () => {
 
           <div className="flex justify-between text-xl font-bold mb-6">
             <span>Total:</span>
-            <span>${totalPrice.toFixed(2)}</span>
+            <span>{formatPrice(totalPrice)}</span>
           </div>
 
           <button

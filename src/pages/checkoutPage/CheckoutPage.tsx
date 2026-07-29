@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getDisplayPrice } from "../../utils/price";
+import { formatPrice, getDisplayPrice } from "../../utils/price";
 
 const checkoutFormSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -71,7 +71,7 @@ export const CheckoutPage = () => {
                     </p>
                   </div>
                   <p className="font-semibold">
-                    ${(discountedPrice * item.quantity).toFixed(2)}
+                    {formatPrice(discountedPrice * item.quantity)}
                   </p>
                 </div>
               );
@@ -269,7 +269,7 @@ export const CheckoutPage = () => {
         <div className="bg-blue-50 rounded-lg p-6 border-2 border-blue-200">
           <div className="flex justify-between text-xl font-bold mb-4">
             <span>Order Total:</span>
-            <span>${totalPrice.toFixed(2)}</span>
+            <span>{formatPrice(totalPrice)}</span>
           </div>
 
           <button

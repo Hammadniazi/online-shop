@@ -1,7 +1,7 @@
 import type { Product } from "../types";
 import { useCartStore } from "../stores/cartStore";
 import { toast } from "react-hot-toast";
-import { getDiscountPercentage, isDiscounted } from "../utils/price";
+import { formatPrice, getDiscountPercentage, isDiscounted } from "../utils/price";
 
 interface ProductCardProps {
   product: Product;
@@ -82,15 +82,15 @@ export default function ProductCard({
           {isDiscounted(product) ? (
             <>
               <span className="text-lg font-bold text-green-600">
-                {product.discountedPrice!.toFixed(2)}nok
+                {formatPrice(product.discountedPrice!)}
               </span>
               <span className="text-md text-gray-600 line-through">
-                {product.price.toFixed(2)}nok
+                {formatPrice(product.price)}
               </span>
             </>
           ) : (
             <span className="text-lg font-bold text-gray-900">
-              {product.price.toFixed(2)}nok
+              {formatPrice(product.price)}
             </span>
           )}
         </div>
