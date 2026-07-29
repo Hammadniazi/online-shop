@@ -1,5 +1,12 @@
 import type { Product } from "../types";
 
+const currencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "NOK",
+});
+
+export const formatPrice = (amount: number) => currencyFormatter.format(amount);
+
 export const getDisplayPrice = (product: Pick<Product, "price" | "discountedPrice">) =>
   product.discountedPrice && product.discountedPrice < product.price
     ? product.discountedPrice

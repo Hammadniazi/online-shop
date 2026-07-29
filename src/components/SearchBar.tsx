@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Product } from "../types";
 import { useSearchProducts } from "../hooks/useProducts";
 import { router } from "../router";
+import { formatPrice } from "../utils/price";
 
 export const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -98,7 +99,7 @@ export const SearchBar = () => {
                       {product.title}{" "}
                     </p>
                     <p className="text-xs text-gray-500">
-                      {product.price.toFixed(2)}{" "}
+                      {formatPrice(product.price)}{" "}
                     </p>
                   </div>
                 </li>

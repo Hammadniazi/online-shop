@@ -7,9 +7,11 @@ import { contactRoute } from "./routes/contact/Contact";
 import { cartRoute } from "./routes/cart/Cart";
 import { checkoutRoute } from "./routes/checkout/Checkout";
 import { checkoutSuccess } from "./routes/checkoutSuccess/CheckoutSuccess";
+import { RouteError } from "./components/RouteError";
 export const rootRoute = createRootRoute({
   component: Layout,
   notFoundComponent: NotFound,
+  errorComponent: RouteError,
 });
 const routeTree = rootRoute.addChildren([
   homeRoute,

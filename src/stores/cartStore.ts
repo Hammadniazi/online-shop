@@ -71,6 +71,21 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: "cart-store",
+      version: 1,
+      migrate: (persistedState) => {
+        const state = persistedState as { items?: unknown };
+        const items = Array.isArray(state?.items)
+          ? state.items.filter(
+              (item): item is CartItem =>
+                typeof item === "object" &&
+                item !== null &&
+                "id" in item &&
+                "price" in item &&
+                "quantity" in item,
+            )
+          : [];
+        return { items };
+      },
     },
   ),
 );

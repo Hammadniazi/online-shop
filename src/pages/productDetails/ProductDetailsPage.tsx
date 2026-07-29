@@ -3,18 +3,33 @@ import { useProductById } from "../../hooks/useProducts";
 import { useCartStore } from "../../stores/cartStore";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
-import { isDiscounted } from "../../utils/price";
+import { formatPrice, isDiscounted } from "../../utils/price";
 
 export const ProductDetailsPage = () => {
   const { id } = useParams({ from: "/products/$id" });
   const router = useRouter();
-  const [quantity] = useState(1);
+  const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
   const { data: product, isLoading, error } = useProductById(id);
   const addItem = useCartStore((state) => state.addItem);
 
   if (isLoading) {
-    return <div className="text-center py-12 text-lg">Loading product...</div>;
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white rounded-lg p-8 shadow-lg">
+        <div className="bg-gray-200 rounded-lg h-80 animate-pulse" />
+        <div className="space-y-6">
+          <div className="h-8 bg-gray-200 rounded animate-pulse w-3/4" />
+          <div className="h-5 bg-gray-200 rounded animate-pulse w-1/3" />
+          <div className="h-10 bg-gray-200 rounded animate-pulse w-1/2" />
+          <div className="space-y-2">
+            <div className="h-4 bg-gray-200 rounded animate-pulse" />
+            <div className="h-4 bg-gray-200 rounded animate-pulse" />
+            <div className="h-4 bg-gray-200 rounded animate-pulse w-2/3" />
+          </div>
+          <div className="h-12 bg-gray-200 rounded-lg animate-pulse" />
+        </div>
+      </div>
+    );
   }
 
   if (error || !product) {
@@ -80,15 +95,15 @@ export const ProductDetailsPage = () => {
               {isDiscounted(product) ? (
                 <>
                   <span className="text-3xl font-bold text-gray-900">
-                    {product.discountedPrice!.toFixed(2)}nok
+                    {formatPrice(product.discountedPrice!)}
                   </span>
                   <span className="text-lg text-gray-500 line-through">
-                    {product.price.toFixed(2)}nok
+                    {formatPrice(product.price)}
                   </span>
                 </>
               ) : (
                 <span className="text-3xl font-bold text-gray-900">
-                  {product.price.toFixed(2)}nok
+                  {formatPrice(product.price)}
                 </span>
               )}
             </div>
@@ -109,6 +124,43 @@ export const ProductDetailsPage = () => {
             <p className="text-gray-700 leading-relaxed">
               {product.description}
             </p>
+          </div>
+          {/* Quantity Selector */}
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-semibold text-gray-700">
+              Quantity:
+            </span>
+            <div className="flex items-center border border-gray-300 rounded-lg">
+              <button
+                type="button"
+                onClick={() => {
+                  setQuantity((q) => Math.max(1, q - 1));
+                  setAddedToCart(false);
+                }}
+                disabled={quantity <= 1}
+                aria-label="Decrease quantity"
+                className="w-9 h-9 flex items-center justify-center text-gray-700 hover:bg-gray-100 disabled:text-gray-300 disabled:hover:bg-transparent"
+              >
+                −
+              </button>
+              <span
+                className="w-10 text-center font-semibold"
+                aria-live="polite"
+              >
+                {quantity}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setQuantity((q) => q + 1);
+                  setAddedToCart(false);
+                }}
+                aria-label="Increase quantity"
+                className="w-9 h-9 flex items-center justify-center text-gray-700 hover:bg-gray-100"
+              >
+                +
+              </button>
+            </div>
           </div>
           {/* Add to Cart Button */}
           <button
