@@ -1,7 +1,8 @@
-import type { Product } from "../types";
-import { useCartStore } from "../stores/cartStore";
+import type { Product } from "@/types";
+import { useCartStore } from "@/stores/cartStore";
 import { toast } from "react-hot-toast";
-import { formatPrice, getDiscountPercentage, isDiscounted } from "../utils/price";
+import { formatPrice, getDiscountPercentage, isDiscounted } from "@/utils/price";
+import { StarRating } from "./StarRating";
 
 interface ProductCardProps {
   product: Product;
@@ -61,10 +62,7 @@ export default function ProductCard({
           {/* Rating */}
           {product.rating > 0 && (
             <div className="flex items-center mb-3">
-              <div className="flex text-yellow-400">
-                {"⭐".repeat(Math.round(product.rating))}
-                {"☆".repeat(5 - Math.round(product.rating))}
-              </div>
+              <StarRating rating={product.rating} />
               <span className="text-sm text-gray-600 ml-2">
                 ({Math.round(product.rating)})
               </span>

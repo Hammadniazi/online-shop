@@ -1,17 +1,38 @@
 import { useRouter } from "@tanstack/react-router";
-import { useCartStore } from "../stores/cartStore";
-import { useState } from "react";
+import { useCartStore } from "@/stores/cartStore";
+import { useEffect, useRef, useState } from "react";
 
 export default function Header() {
   const router = useRouter();
   const itemCount = useCartStore((state) => state.getItemCount());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const firstMenuLinkRef = useRef<HTMLButtonElement>(null);
+
   const handleNavigation = (path: string) => {
     router.navigate({ to: path });
     setIsMenuOpen(false);
   };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+    menuButtonRef.current?.focus();
+  };
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+
+    firstMenuLinkRef.current?.focus();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeMenu();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isMenuOpen]);
+
   return (
-    <header className="bg-white shadow-md">
+    <header className="bg-white shadow-md relative z-50">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <button
@@ -59,6 +80,7 @@ export default function Header() {
 
         {/* Mobile Menu Button */}
         <button
+          ref={menuButtonRef}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="md:hidden text-2xl"
           aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
@@ -68,10 +90,20 @@ export default function Header() {
         </button>
       </div>
 
+      {/* Mobile Menu Backdrop */}
+      {isMenuOpen && (
+        <div
+          className="mobile-menu-backdrop md:hidden fixed inset-0 top-[64px] bg-black/40 z-40"
+          onClick={closeMenu}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <nav className="md:hidden bg-gray-100 px-4 py-4 flex flex-col gap-4">
+        <nav className="mobile-menu-panel md:hidden bg-gray-100 px-4 py-4 flex flex-col gap-4 relative z-50">
           <button
+            ref={firstMenuLinkRef}
             onClick={() => handleNavigation("/")}
             className="text-gray-700 hover:text-blue-600 text-left"
           >

@@ -1,11 +1,34 @@
-import { useProducts } from "../../hooks/useProducts";
-import { ProductGrid } from "../../components/ProductGrid";
-import { SearchBar } from "../../components/SearchBar";
+import { useMemo, useState } from "react";
+import { useProducts } from "@/hooks/useProducts";
+import { ProductGrid } from "@/components/ProductGrid";
+import { SearchBar } from "@/components/SearchBar";
+import { TagFilter } from "@/components/TagFilter";
 import { useRouter } from "@tanstack/react-router";
 
 export default function Home() {
   const router = useRouter();
   const { data: products = [], isLoading, error } = useProducts();
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  const allTags = useMemo(() => {
+    const tagSet = new Set<string>();
+    products.forEach((product) => product.tags?.forEach((tag) => tagSet.add(tag)));
+    return [...tagSet].sort();
+  }, [products]);
+
+  const filteredProducts = useMemo(() => {
+    if (selectedTags.length === 0) return products;
+    return products.filter((product) =>
+      product.tags?.some((tag) => selectedTags.includes(tag)),
+    );
+  }, [products, selectedTags]);
+
+  const handleToggleTag = (tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
+    );
+  };
+
   const handleProductclick = (id: string) => {
     router.navigate({ to: `/products/${id}` });
   };
@@ -21,9 +44,17 @@ export default function Home() {
       </div>
       {/* Product Grid */}
       <div>
-        <h2 className="text-2xl font-bold mb-6">Featured Products</h2>
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+          <h2 className="text-2xl font-bold">Featured Products</h2>
+          <TagFilter
+            tags={allTags}
+            selectedTags={selectedTags}
+            onToggleTag={handleToggleTag}
+            onClear={() => setSelectedTags([])}
+          />
+        </div>
         <ProductGrid
-          products={products}
+          products={filteredProducts}
           isLoading={isLoading}
           error={error}
           onProductClick={(id) => handleProductclick(id)}

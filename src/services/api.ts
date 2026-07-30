@@ -1,4 +1,4 @@
-import type { Product } from "../types";
+import type { Product } from "@/types";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://v2.api.noroff.dev";

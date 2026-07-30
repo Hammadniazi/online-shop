@@ -1,7 +1,7 @@
 import { useRouter } from "@tanstack/react-router";
-import { useCartStore } from "../../stores/cartStore";
+import { useCartStore } from "@/stores/cartStore";
 import { toast } from "react-hot-toast";
-import { formatPrice, getDisplayPrice, isDiscounted } from "../../utils/price";
+import { formatPrice, getDisplayPrice, isDiscounted } from "@/utils/price";
 
 export const Cart = () => {
   const router = useRouter();
