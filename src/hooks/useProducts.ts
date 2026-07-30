@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import type { Product } from "../types";
-import { productService } from "../services/api";
+import type { Product } from "@/types";
+import { productService } from "@/services/api";
 
 export const useProducts = () => {
   return useQuery<Product[]>({

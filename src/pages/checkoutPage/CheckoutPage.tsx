@@ -1,10 +1,10 @@
 import { useRouter } from "@tanstack/react-router";
-import { useCartStore } from "../../stores/cartStore";
+import { useCartStore } from "@/stores/cartStore";
 import { toast } from "react-hot-toast";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { formatPrice, getDisplayPrice } from "../../utils/price";
+import { formatPrice, getDisplayPrice } from "@/utils/price";
 
 const checkoutFormSchema = z.object({
   firstName: z.string().min(1, "First name is required"),

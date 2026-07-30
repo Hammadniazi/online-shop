@@ -1,7 +1,7 @@
 import { createRoute } from "@tanstack/react-router";
 
-import { rootRoute } from "../../router";
-import { Cart } from "../../pages/cart/Cart";
+import { rootRoute } from "@/router";
+import { Cart } from "@/pages/cart/Cart";
 
 const cartRoute = createRoute({
   getParentRoute: () => rootRoute,

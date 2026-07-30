@@ -1,6 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
-import { rootRoute } from "../../router";
-import { CheckoutSuccess } from "../../pages/checkoutSuccess/CheckoutSuccess";
+import { rootRoute } from "@/router";
+import { CheckoutSuccess } from "@/pages/checkoutSuccess/CheckoutSuccess";
 
 const checkoutSuccess = createRoute({
   getParentRoute: () => rootRoute,

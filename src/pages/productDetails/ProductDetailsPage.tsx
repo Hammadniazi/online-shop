@@ -1,9 +1,10 @@
 import { useParams, useRouter } from "@tanstack/react-router";
-import { useProductById } from "../../hooks/useProducts";
-import { useCartStore } from "../../stores/cartStore";
+import { useProductById } from "@/hooks/useProducts";
+import { useCartStore } from "@/stores/cartStore";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
-import { formatPrice, isDiscounted } from "../../utils/price";
+import { formatPrice, isDiscounted } from "@/utils/price";
+import { StarRating } from "@/components/StarRating";
 
 export const ProductDetailsPage = () => {
   const { id } = useParams({ from: "/products/$id" });
@@ -79,10 +80,7 @@ export const ProductDetailsPage = () => {
           </h1>
           {product.rating > 0 && (
             <div className="flex items-center">
-              <div className="flex text-yellow-400 mr-2">
-                {"⭐".repeat(Math.round(product.rating))}
-                {"☆".repeat(5 - Math.round(product.rating))}
-              </div>
+              <StarRating rating={product.rating} className="mr-2" />
               <span className="text-gray-600">
                 ({Math.round(product.rating)})
               </span>
@@ -184,10 +182,7 @@ export const ProductDetailsPage = () => {
                   <p className="font-semibold text-gray-900">
                     {review.username || "Anonymous"}
                   </p>
-                  <p className="text-yellow-400">
-                    {"★".repeat(review.rating)}
-                    {"☆".repeat(5 - review.rating)}
-                  </p>
+                  <StarRating rating={review.rating} />
                 </div>
                 <p className="text-gray-700">{review.description}</p>
               </div>

@@ -1,4 +1,4 @@
-import type { Product } from "../types";
+import type { Product } from "@/types";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
