@@ -90,8 +90,9 @@ export const SearchBar = () => {
                   }`}
                 >
                   <img
-                    src={product.image.url || "https://via.placeholder.com/50"}
+                    src={product.image.url || "/placeholder.svg"}
                     alt={product.title}
+                    loading="lazy"
                     className="w-10 h-10 object-cover rounded"
                   />
                   <div className="flex-1">

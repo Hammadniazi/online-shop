@@ -1,10 +1,12 @@
-import { useRouter } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { CheckIcon } from "@/components/icons";
 
 export const CheckoutSuccess = () => {
-  const router = useRouter();
+  useDocumentTitle("Order Confirmed");
   const [orderNumber] = useState(() =>
-    Math.random().toString(36).substr(2, 9).toUpperCase(),
+    Math.random().toString(36).slice(2, 11).toUpperCase(),
   );
   const [orderDate] = useState(() => new Date());
   const [deliveryDate] = useState(
@@ -15,7 +17,7 @@ export const CheckoutSuccess = () => {
     <div className="flex flex-col items-center justify-center py-16 space-y-8">
       {/* Success Icon */}
       <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center">
-        <span className="text-6xl">✓</span>
+        <CheckIcon className="w-12 h-12 text-green-600" />
       </div>
 
       {/* Message */}
@@ -51,18 +53,18 @@ export const CheckoutSuccess = () => {
 
       {/* Actions */}
       <div className="flex gap-4">
-        <button
-          onClick={() => router.navigate({ to: "/" })}
+        <Link
+          to="/"
           className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors"
         >
           Continue Shopping
-        </button>
-        <button
-          onClick={() => router.navigate({ to: "/contact" })}
+        </Link>
+        <Link
+          to="/contact"
           className="border border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold px-8 py-3 rounded-lg transition-colors"
         >
           Contact Us
-        </button>
+        </Link>
       </div>
     </div>
   );

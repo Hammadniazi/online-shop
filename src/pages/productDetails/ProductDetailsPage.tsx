@@ -1,18 +1,22 @@
-import { useParams, useRouter } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 import { useProductById } from "@/hooks/useProducts";
 import { useCartStore } from "@/stores/cartStore";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
 import { formatPrice, isDiscounted } from "@/utils/price";
 import { StarRating } from "@/components/StarRating";
+import { QuantityStepper } from "@/components/QuantityStepper";
+import { CheckIcon } from "@/components/icons";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 export const ProductDetailsPage = () => {
   const { id } = useParams({ from: "/products/$id" });
-  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
   const { data: product, isLoading, error } = useProductById(id);
   const addItem = useCartStore((state) => state.addItem);
+
+  useDocumentTitle(product?.title);
 
   if (isLoading) {
     return (
@@ -37,12 +41,12 @@ export const ProductDetailsPage = () => {
     return (
       <div className="text-center py-12">
         <p className="text-red-600 mb-4">Failed to load product details</p>
-        <button
-          onClick={() => router.navigate({ to: "/" })}
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+        <Link
+          to="/"
+          className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
         >
           Back to Home
-        </button>
+        </Link>
       </div>
     );
   }
@@ -55,18 +59,18 @@ export const ProductDetailsPage = () => {
 
   return (
     <div className="space-y-8">
-      <button
-        onClick={() => router.navigate({ to: "/" })}
-        className="text-blue-600 hover:text-blue-800 font-semibold mb-4"
+      <Link
+        to="/"
+        className="inline-block text-blue-600 hover:text-blue-800 font-semibold mb-4"
       >
         Back to Products
-      </button>
+      </Link>
 
       {/* Product Details */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white rounded-lg p-8 shadow-lg">
         <div className="flex items-center justify-center bg-gray-100 rounded-lg">
           <img
-            src={product.image?.url || "https://via.placeholder.com/500"}
+            src={product.image?.url || "/placeholder.svg"}
             alt={product.title}
             className="w-full h-full object-contain"
           />
@@ -128,46 +132,24 @@ export const ProductDetailsPage = () => {
             <span className="text-sm font-semibold text-gray-700">
               Quantity:
             </span>
-            <div className="flex items-center border border-gray-300 rounded-lg">
-              <button
-                type="button"
-                onClick={() => {
-                  setQuantity((q) => Math.max(1, q - 1));
-                  setAddedToCart(false);
-                }}
-                disabled={quantity <= 1}
-                aria-label="Decrease quantity"
-                className="w-9 h-9 flex items-center justify-center text-gray-700 hover:bg-gray-100 disabled:text-gray-300 disabled:hover:bg-transparent"
-              >
-                −
-              </button>
-              <span
-                className="w-10 text-center font-semibold"
-                aria-live="polite"
-              >
-                {quantity}
-              </span>
-              <button
-                type="button"
-                onClick={() => {
-                  setQuantity((q) => q + 1);
-                  setAddedToCart(false);
-                }}
-                aria-label="Increase quantity"
-                className="w-9 h-9 flex items-center justify-center text-gray-700 hover:bg-gray-100"
-              >
-                +
-              </button>
-            </div>
+            <QuantityStepper
+              quantity={quantity}
+              onChange={(q) => {
+                setQuantity(q);
+                setAddedToCart(false);
+              }}
+              ariaLabel="Quantity"
+            />
           </div>
           {/* Add to Cart Button */}
           <button
             onClick={handleAddToCart}
-            className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors text-white ${
+            className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors text-white flex items-center justify-center gap-2 ${
               addedToCart ? "bg-green-600" : "bg-blue-600 hover:bg-blue-700"
             }`}
           >
-            {addedToCart ? "✓ Added to Cart" : "Add to Cart"}
+            {addedToCart && <CheckIcon className="w-5 h-5" />}
+            {addedToCart ? "Added to Cart" : "Add to Cart"}
           </button>
         </div>
       </div>

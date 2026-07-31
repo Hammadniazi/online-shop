@@ -5,6 +5,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formatPrice, getDisplayPrice } from "@/utils/price";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 const checkoutFormSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -28,6 +29,7 @@ const checkoutFormSchema = z.object({
 type CheckoutFormValues = z.infer<typeof checkoutFormSchema>;
 
 export const CheckoutPage = () => {
+  useDocumentTitle("Checkout");
   const router = useRouter();
   const items = useCartStore((state) => state.items);
   const clearCart = useCartStore((state) => state.clearCart);
@@ -35,10 +37,12 @@ export const CheckoutPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<CheckoutFormValues>({ resolver: zodResolver(checkoutFormSchema) });
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    // Simulated payment processing — no real gateway is called.
+    await new Promise((resolve) => setTimeout(resolve, 600));
     clearCart();
     toast.success("Order completed successfully!");
     router.navigate({ to: "/checkout-success" });
@@ -204,6 +208,10 @@ export const CheckoutPage = () => {
         {/* Payment */}
         <div className="bg-white rounded-lg p-6 shadow-md space-y-4">
           <h2 className="text-xl font-bold mb-4">Payment Method</h2>
+          <p className="text-sm text-gray-500 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
+            This is a demo checkout — no real payment is processed and no
+            card details are stored.
+          </p>
 
           <div>
             <input
@@ -274,9 +282,10 @@ export const CheckoutPage = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors"
+            disabled={isSubmitting}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition-colors"
           >
-            Complete Purchase
+            {isSubmitting ? "Processing..." : "Complete Purchase"}
           </button>
         </div>
       </div>

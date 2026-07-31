@@ -1,10 +1,12 @@
-import { useRouter } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { useCartStore } from "@/stores/cartStore";
 import { toast } from "react-hot-toast";
 import { formatPrice, getDisplayPrice, isDiscounted } from "@/utils/price";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { QuantityStepper } from "@/components/QuantityStepper";
 
 export const Cart = () => {
-  const router = useRouter();
+  useDocumentTitle("Cart");
   const { items, removeItem, updateQuantity } = useCartStore();
   const totalPrice = useCartStore((state) => state.getTotalPrice());
   const itemCount = useCartStore((state) => state.getItemCount());
@@ -13,12 +15,12 @@ export const Cart = () => {
     return (
       <div className="text-center py-12 space-y-6">
         <p className="text-2xl text-gray-600">Your cart is empty.</p>
-        <button
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
-          onClick={() => router.navigate({ to: "/" })}
+        <Link
+          to="/"
+          className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
         >
           Continue Shopping
-        </button>
+        </Link>
       </div>
     );
   }
@@ -39,8 +41,9 @@ export const Cart = () => {
             >
               {/* Product Image */}
               <img
-                src={item.image?.url || "https://via.placeholder.com/100"}
+                src={item.image?.url || "/placeholder.svg"}
                 alt={item.title}
+                loading="lazy"
                 className="w-24 h-24 object-cover rounded-lg"
               />
 
@@ -66,24 +69,11 @@ export const Cart = () => {
 
                 {/* Quantity Controls */}
                 <div className="flex items-center gap-2">
-                  <label
-                    htmlFor={`qty-${item.id}`}
-                    className="text-sm text-gray-600"
-                  >
-                    Qty:
-                  </label>
-                  <input
-                    id={`qty-${item.id}`}
-                    type="number"
-                    min="1"
-                    value={item.quantity}
-                    onChange={(e) =>
-                      updateQuantity(
-                        item.id,
-                        Math.max(1, parseInt(e.target.value) || 1),
-                      )
-                    }
-                    className="w-16 px-2 py-1 border border-gray-300 rounded"
+                  <span className="text-sm text-gray-600">Qty:</span>
+                  <QuantityStepper
+                    quantity={item.quantity}
+                    onChange={(quantity) => updateQuantity(item.id, quantity)}
+                    ariaLabel={`Quantity for ${item.title}`}
                   />
                 </div>
               </div>
@@ -136,19 +126,19 @@ export const Cart = () => {
             <span>{formatPrice(totalPrice)}</span>
           </div>
 
-          <button
-            onClick={() => router.navigate({ to: "/checkout" })}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors mb-3"
+          <Link
+            to="/checkout"
+            className="block text-center w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors mb-3"
           >
             Proceed to Checkout
-          </button>
+          </Link>
 
-          <button
-            onClick={() => router.navigate({ to: "/" })}
-            className="w-full border border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold py-3 rounded-lg transition-colors"
+          <Link
+            to="/"
+            className="block text-center w-full border border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold py-3 rounded-lg transition-colors"
           >
             Continue Shopping
-          </button>
+          </Link>
         </div>
       </div>
     </div>
