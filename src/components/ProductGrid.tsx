@@ -5,13 +5,11 @@ interface ProductGridProps {
   products: Product[];
   isLoading: boolean;
   error?: Error | null;
-  onProductClick?: (id: string) => void;
 }
 export const ProductGrid = ({
   products,
   isLoading,
   error,
-  onProductClick = () => {},
 }: ProductGridProps) => {
   if (isLoading) {
     return (
@@ -46,10 +44,7 @@ export const ProductGrid = ({
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {products.map((product) => (
         <div key={product.id} className="product-grid-item">
-          <ProductCard
-            product={product}
-            onProductClick={onProductClick}
-          />
+          <ProductCard product={product} />
         </div>
       ))}
     </div>

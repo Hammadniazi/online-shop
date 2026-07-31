@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react";
 import { useProducts } from "@/hooks/useProducts";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { ProductGrid } from "@/components/ProductGrid";
 import { SearchBar } from "@/components/SearchBar";
 import { TagFilter } from "@/components/TagFilter";
-import { useRouter } from "@tanstack/react-router";
 
 export default function Home() {
-  const router = useRouter();
+  useDocumentTitle();
   const { data: products = [], isLoading, error } = useProducts();
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
@@ -27,10 +27,6 @@ export default function Home() {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
-  };
-
-  const handleProductclick = (id: string) => {
-    router.navigate({ to: `/products/${id}` });
   };
 
   return (
@@ -57,7 +53,6 @@ export default function Home() {
           products={filteredProducts}
           isLoading={isLoading}
           error={error}
-          onProductClick={(id) => handleProductclick(id)}
         />
       </div>
     </div>

@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-hot-toast";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 const contactFormSchema = z.object({
   fullName: z.string().min(3, "Full name must be at least 3 characters"),
@@ -10,6 +12,7 @@ const contactFormSchema = z.object({
 });
 
 export const Contact = () => {
+  useDocumentTitle("Contact Us");
   const {
     register,
     handleSubmit,
@@ -18,7 +21,7 @@ export const Contact = () => {
   } = useForm({ resolver: zodResolver(contactFormSchema) });
 
   const onSubmit = () => {
-    alert("Thank you for contacting us! We will get back to you soon.");
+    toast.success("Thank you for contacting us! We will get back to you soon.");
     reset();
   };
   return (
